@@ -4,10 +4,12 @@ import 'package:medical_college/Components/buttons.dart';
 import 'package:medical_college/Components/textField.dart';
 import 'package:medical_college/Components/util.dart';
 import 'package:medical_college/Screens/Attendance/attendance.dart';
+import 'package:medical_college/Screens/emptyScreen.dart';
 import 'package:medical_college/Services/apiData.dart';
 import 'package:medical_college/Theme/colors.dart';
 import 'package:medical_college/Theme/style.dart';
 import 'package:medical_college/model/attendance_model.dart';
+import 'package:medical_college/model/group_model.dart';
 import 'package:medical_college/model/semester_model.dart';
 import 'package:medical_college/provider/course_provider.dart';
 import 'package:medical_college/provider/session_provider.dart';
@@ -32,6 +34,7 @@ class _PeriodAttendanceState extends State<PeriodAttendance> {
   List<Semester> semesterList = [];
   String courseValue = '';
   String semesterValue = '';
+  String groupValue = '';
   String subjectValue = '';
   String classValue = '';
   String sessionValue = '';
@@ -55,7 +58,7 @@ class _PeriodAttendanceState extends State<PeriodAttendance> {
   List<AttendanceModel> studentAttendanceList = [];
   Future<String> getAttendance() async {
     String url = APIData.getStudentAttendance;
-    var response = await http.get(Uri.parse('$url/$courseValue/$semesterValue/${date.text}/$subjectValue/$sessionValue/$classValue'),
+    var response = await http.get(Uri.parse('$url/$courseValue/$semesterValue/${date.text}/$subjectValue/$sessionValue/$classValue/$groupValue'),
       headers: APIData.kHeader,
     );
     if(response.statusCode == 200){
@@ -85,6 +88,37 @@ class _PeriodAttendanceState extends State<PeriodAttendance> {
       print(jsonData);
       for(var item in jsonData['data']){
         classList.add(item['class'].toString());
+      }
+      setState(() {});
+    } else {
+      print(response.statusCode);
+    }
+    return 'Success';
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getGroupStudent();
+  }
+
+  List<GroupModel> groupList = [];
+  Future<String> getGroupStudent() async {
+    groupList = [];
+    String url = APIData.getGroupStudent;
+    var response = await http.get(Uri.parse(url),
+      headers: APIData.kHeader,
+    );
+    if(response.statusCode == 200){
+      var jsonData = jsonDecode(response.body);
+      print(jsonData);
+      for(var item in jsonData['data']){
+        groupList.add(
+          GroupModel(
+            id: item['id'],
+            name: item['name'].toString(),
+          ),
+        );
       }
       setState(() {});
     } else {
@@ -190,6 +224,43 @@ class _PeriodAttendanceState extends State<PeriodAttendance> {
                               onChanged: (String? newValue) {
                                 setState(() {
                                   semesterValue = newValue!;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(width: 10.0),
+                        Text('Group', style: kSmallText()),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                      child: Container(
+                        height: 55,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: dropTextFieldDesign(),
+                        child: DropdownButtonHideUnderline(
+                          child: ButtonTheme(
+                            alignedDropdown: true,
+                            child: DropdownButton(
+                              isExpanded: true,
+                              borderRadius: BorderRadius.circular(10.0),
+                              value: groupValue != '' ? groupValue : null,
+                              hint: Text('Group'),
+                              items: groupList
+                                  .map((value) {
+                                return DropdownMenuItem<String>(
+                                  value: value.id.toString(),
+                                  child: Text(value.name),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  groupValue = newValue!;
                                 });
                               },
                             ),
@@ -368,7 +439,7 @@ class _PeriodAttendanceState extends State<PeriodAttendance> {
                     builder: (context, snapshot) {
                       if(snapshot.hasData){
                         var data = snapshot.data;
-                        return ListView.separated(
+                        return studentAttendanceList.isNotEmpty ? ListView.separated(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemCount: studentAttendanceList.length,
@@ -436,6 +507,10 @@ class _PeriodAttendanceState extends State<PeriodAttendance> {
                           separatorBuilder: (context, index){
                             return SizedBox(height: 10.0);
                           },
+                        ) : Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: roundedShadedDesign(context),
+                          child: EmptyScreen(message: 'No Student Found'),
                         );
                       }
                       return LoadingIcon();

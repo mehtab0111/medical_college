@@ -10,7 +10,7 @@ class Members {
   int categoryId;
   String categoryName;
   String religion;
-  int mobileNo;
+  String mobileNo;
   String imageURL;
   String image;
   int emergencyPhoneNumber;
@@ -79,7 +79,7 @@ class Members {
   factory Members.fromJson(Map<String, dynamic> json) {
     return Members(
       id: json['id'],
-      identificationNo: json['identification_no'],
+      identificationNo: json['identification_no'].toString(),
       firstName: json['first_name'],
       middleName: json['middle_name'] ?? '',
       lastName: json['last_name'],
@@ -88,7 +88,7 @@ class Members {
       categoryId: json['category_id'],
       categoryName: json['category_name'],
       religion: json['religion'] ?? '',
-      mobileNo: json['mobile_no'] ?? 0,
+      mobileNo: json['mobile_no'].toString(),
       imageURL: json['img_url'] ?? '',
       image: json['image'] ?? '',
       emergencyPhoneNumber: json['emergency_phone_number'] ?? 0,

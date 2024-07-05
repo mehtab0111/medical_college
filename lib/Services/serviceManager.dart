@@ -43,7 +43,9 @@ class ServiceManager {
   void getTokenID () async {
     final prefs = await SharedPreferences.getInstance();
     tokenID = prefs.getString('tokenID') ?? '';
-    getUserData();
+    if(tokenID != ''){
+      getUserData();
+    }
   }
 
   void setAddressID (String addressID) async {
@@ -69,7 +71,7 @@ class ServiceManager {
     var res = await http.get(Uri.parse(url), headers: APIData.kHeader);
     if(res.statusCode == 200){
       var data = jsonDecode(res.body);
-      userName = '${data['data']['first_name']} ${data['data']['last_name']}';
+      userName = '${data['data']['first_name']} ${data['data']['first_name']} ${data['data']['last_name']}';
       userEmail = '${data['data']['email']}';
       // profileURL = '${data['data']['photo']}';
       userMobile = data['data']['mobile_no'] ?? '';

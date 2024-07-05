@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:medical_college/Components/DialougBox/deletePopUp.dart';
 import 'package:medical_college/Components/textField.dart';
 import 'package:medical_college/Components/util.dart';
+import 'package:medical_college/Screens/StudentInformation/editStudent.dart';
 import 'package:medical_college/Screens/emptyScreen.dart';
 import 'package:medical_college/Services/apiData.dart';
 import 'package:medical_college/Theme/colors.dart';
@@ -121,7 +122,7 @@ class _ShowStudentState extends State<ShowStudent> {
                             SizedBox(width: 10),
                             IconButton(
                               onPressed: (){
-
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => EditStudent()));
                               },
                               icon: Icon(Icons.edit),
                             ),

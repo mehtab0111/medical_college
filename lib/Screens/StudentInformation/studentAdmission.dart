@@ -1086,25 +1086,51 @@ class _StudentAdmissionState extends State<StudentAdmission> {
       'mode_of_payment': paymentModeValue,
       'transaction_id': transactionID.text,
       'caution_money': cautionMoney.text,
-      // 'image': (binary),
-      // 'dob_proof': undefined,
-      // 'blood_group_proof': (binary), //LAB REPORT
-      // 'aadhaar_card_proof': undefined,
-      // 'admission_slip': (binary),
-      // 'father_income_proof': undefined,
-      // 'mother_income_proof': undefined,
-      // 'registration_proof': (binary),
+      // 'image': (binary), //done
+      // 'dob_proof': undefined, // done
+      // 'blood_group_proof': (binary), //LAB REPORT //done
+      // 'aadhaar_card_proof': undefined, //done
+      // 'admission_slip': (binary), //done
+      // 'father_income_proof': undefined, //done
+      // 'mother_income_proof': undefined, //done
+      // 'registration_proof': (binary), //done
     };
     String url = APIData.saveStudent;
     var request = http.MultipartRequest('POST', Uri.parse(url));
     request.headers.addAll(APIData.kHeader);
     request.fields.addAll(formData);
 
-    // if(_image != null){
-    //   request.files.add(
-    //     await http.MultipartFile.fromPath('image', _image!.path),
-    //   );
-    // }
+    if(dobCertificateImage != null){
+      request.files.add(await http.MultipartFile.fromPath('dob_proof', dobCertificateImage!.path));
+    }
+
+    if(admissionSlip != null){
+      request.files.add(await http.MultipartFile.fromPath('admission_slip', admissionSlip!.path));
+    }
+
+    if(studentImage != null){
+      request.files.add(await http.MultipartFile.fromPath('image', studentImage!.path));
+    }
+
+    if(labReportImage != null){
+      request.files.add(await http.MultipartFile.fromPath('blood_group_proof', labReportImage!.path));
+    }
+
+    if(aadhaarCard != null){
+      request.files.add(await http.MultipartFile.fromPath('aadhaar_card_proof', aadhaarCard!.path));
+    }
+
+    if(registrationCertificate != null){
+      request.files.add(await http.MultipartFile.fromPath('registration_proof', registrationCertificate!.path));
+    }
+
+    if(fatherIncomeCertificateImage != null){
+      request.files.add(await http.MultipartFile.fromPath('father_income_proof', fatherIncomeCertificateImage!.path));
+    }
+
+    if(motherIncomeCertificateImage != null){
+      request.files.add(await http.MultipartFile.fromPath('mother_income_proof', motherIncomeCertificateImage!.path));
+    }
 
     var response = await request.send();
     var responseString = await response.stream.bytesToString();

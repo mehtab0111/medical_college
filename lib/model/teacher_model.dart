@@ -9,7 +9,7 @@ class Teacher{
   int categoryID;
   String categoryName;
   String religion;
-  int mobileNo;
+  String mobileNo;
   int emergencyPhoneNumber;
   String bloodGroup;
   int userTypeId;
@@ -83,7 +83,7 @@ class Teacher{
       categoryID: json['category_id'],
       categoryName: json['category_name'],
       religion: json['religion'].toString(),
-      mobileNo: json['mobile_no'] ?? 0,
+      mobileNo: json['mobile_no'].toString(),
       emergencyPhoneNumber: json['emergency_phone_number'] ?? 0,
       bloodGroup: json['blood_group'].toString(),
       userTypeId: json['user_type_id'],

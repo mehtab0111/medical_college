@@ -93,6 +93,7 @@ class APIData {
   static const String getMenuForUpdate = '${baseURL}getMenuForUpdate';
   static const String updateMenuManagement = '${baseURL}updateMenuManagement';
 
+  static const String getGroupStudent = '${baseURL}getGroupStudent';
   static const String getAgent = '${baseURL}getAgent';
   static const String getCategory = '${baseURL}getCategory';
   static const String getFranchise = '${baseURL}getFranchise';

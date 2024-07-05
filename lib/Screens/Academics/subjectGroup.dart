@@ -217,11 +217,12 @@ class _SubjectGroupState extends State<SubjectGroup> {
                               }
                             },
                             child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Icon(selectedSubject.contains(subjectProvider.subjectList[index].id.toString()) ?
                                 Icons.check_box :Icons.check_box_outline_blank_outlined),
                                 SizedBox(width: 10.0),
-                                Text(subjectProvider.subjectList[index].name),
+                                Expanded(child: Text(subjectProvider.subjectList[index].name)),
                               ],
                             ),
                           );

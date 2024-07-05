@@ -50,7 +50,7 @@ class UserModel{
   factory UserModel.fromJson(Map<String, dynamic> json){
     return UserModel(
       id: json['id'],
-      identificationNo: json['identification_no'],
+      identificationNo: json['identification_no'].toString(),
       firstName: json['first_name'],
       middleName: json['middle_name'] ?? '',
       lastName: json['last_name'],
@@ -68,8 +68,8 @@ class UserModel{
       email: json['email'],
       emailVerifiedAt: json['email_verified_at'] ?? '',
       status: json['status'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
+      createdAt: json['created_at'].toString(),
+      updatedAt: json['updated_at'].toString(),
       imageURL: json['img_url'],
     );
   }
